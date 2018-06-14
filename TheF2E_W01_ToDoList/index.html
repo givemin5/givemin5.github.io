@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <style>
+     .isDone{
+        text-decoration: line-through;
+     }
+    </style>
+
+</head>
+
+<body>
+    <div id="app">
+        <button type="button" v-on:click="createDialog()">新增</button>
+        <div v-show="showCreateDialog">
+            <input type="input" v-model="message" />
+            <button type="button" v-on:click="dialogSave()">儲存</button>
+            <button type="button" v-on:click="dialogCanel()">取消</button>
+        </div>
+        <ul>
+            <li v-for="(item,index) in items">
+                <input type="checkbox" v-model="item.isDone" /> 
+                <span v-bind:class="{isDone : item.isDone}">
+                        {{ item.title }}
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 开发环境版本，包含了用帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                showCreateDialog: false,
+                message: '',
+                items: [
+                    {
+                        title : 'demo',
+                        isDone : true
+                    }
+                ]
+            },
+            methods: {
+                createDialog: function () {
+
+                    this.showCreateDialog = !this.showCreateDialog;
+
+                },
+                dialogSave: function () {
+                    this.items.push({ title: this.message, isDone: false });
+                    this.message = '';
+                    this.showCreateDialog = false;
+                },
+                dialogCanel: function () {
+                    this.showCreateDialog = false;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
