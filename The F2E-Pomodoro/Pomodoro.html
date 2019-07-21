@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<!-- Template by Quackit.com -->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/favicon.ico">
+
+    <title>Bootstrap 4 Template</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css"
+        integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY" crossorigin="anonymous">
+
+    <!-- Some extra styles (remove if not needed) -->
+    <style>
+        section {
+            padding: 70px 0;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        /* So that we can see the grid */
+        .grid-example div[class^="col"] {
+            border: 1px solid white;
+            background: lightblue;
+            text-align: center;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        /* Overide Jumbotron's color */
+        .jumbotron {
+            background-color: lightskyblue;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="pomodoro.css">
+</head>
+
+<body data-spy="scroll" data-target="#navbar-example">
+<div class="container" id="app">
+    <nav id="topNav" class="navbar navbar-full navbar-static-top navbar-dark bg-inverse">
+        <div class="container">
+            <button class="navbar-toggler hidden-md-up pull-right" type="button" data-toggle="collapse"
+                data-target="#collapsingNavbar">
+                &#9776;
+            </button>
+            <a class="navbar-brand" href="#">Pomodoro</a>
+            <div class="collapse navbar-toggleable-sm" id="collapsingNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" v-on:click="SetTab(1)">建立任務</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" v-on:click="SetTab(2)">執行番茄鐘</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" v-on:click="SetTab(3)">顯示紀錄</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" v-if="currentTab==1">
+            <h2>建立任務</h2>
+            <div>
+                <!-- Bootstrap Grid -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" v-model="newItem" placeholder="輸入工作名稱">
+                            <div class="input-group-btn">
+                                <button class="btn btn-success" v-on:click="AddItem" type="submit">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" v-for="(item, index) in items">
+                        <div class="col-sm-12">
+                            <div class="item_card">
+                                    {{item.Name}} <button type="button"  class="btn btn-danger" v-on:click="RemoveItem(index)">移除</button>
+                            </div>
+                               
+                        </div>
+                </div>
+            </div>
+    </div>
+    <div class="container" v-if="currentTab == 2">
+
+            <div class="row" v-for="(item, index) in items">
+                    <div class="col-sm-12">
+                           {{item.Name}} <button type="button" class="btn btn-success" v-on:click="SetWork(index)">開始執行</button> 
+                    </div>
+            </div>
+
+                <div class="row">
+                    <div class="col-sm-12" >
+                        工作項目 : {{workItem.Name}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary" v-on:click="LongTimer">Pomodoro</button>
+                        <button type="button" class="btn btn-primary" v-on:click="ShortBreak">Short Break</button>
+                        <button type="button" class="btn btn-primary" v-on:click="LongBreak">Long Break</button>
+                        <button type="button" class="btn btn-primary" v-on:click="StopAudio">Stop Audio</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                       <h2> {{Minute}} : {{Second}} </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary" v-on:click="StartTimer">開始</button>
+                        <button type="button" class="btn btn-info" v-on:click="ContinueTimer"  v-if="timer.value > 0 && timer.fun == null">繼續</button>
+                        <button type="button" class="btn btn-secondary" v-on:click="StopTimer" v-if="timer.fun !== null">暫停</button>
+                        <button type="button" class="btn btn-success" v-on:click="Finished">完成</button>
+                    </div>
+                </div>
+    </div>
+    <div class="container" v-if="currentTab == 3">
+                <div class="row">
+                    <table class="table">
+                        <thead class="thead-inverse">
+                            <tr>
+                                <th>工作項目</th>
+                                <th>結束執行時間</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="(record, index) in records">
+                            <tr>
+                                <td>{{record.Name}}</td>
+                                <td>{{record.FinishDate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+     </div>
+
+    <footer>
+        <p>&copy; Givemin5 2019</p>
+    </footer>
+</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"
+        integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY"
+        crossorigin="anonymous"></script>
+
+    <!-- Tether -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"
+        integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB"
+        crossorigin="anonymous"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js"
+        integrity="sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD"
+        crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+    <script src="vue.js"></script>
+    <script src="pomodoro.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+.item_card{
+    padding: 10px;
+}
+.nav-item a:hover {
+    cursor:pointer;
+}
