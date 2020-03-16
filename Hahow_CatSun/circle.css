@@ -8,10 +8,22 @@
     height: 150px;
     border-radius: 50%;
     background: #aaf;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
 .ellipse{
     width: 300px;
     height: 150px;
     border-radius: 75px;
     background: #aaf;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
