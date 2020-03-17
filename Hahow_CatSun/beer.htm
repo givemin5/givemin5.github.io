@@ -1,29 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link href="beer.css"  rel="stylesheet" />
+    <link href="beer.css" rel="stylesheet" />
 </head>
+
 <body>
-    <div class="beerDiv">
-    <div class="cup">
-        <div class="beer">
-            <div class="top">
-                <div class="topcircle top1"></div>
-                <div class="topcircle top2"></div>
-                <div class="topcircle top3"></div>
-                <div class="topcircle top4"></div>
+    <div id="app">
+        <div class="cup">
+            <div class="beer">
+                <div class="top">
+                    <div class="topcircle top1"></div>
+                    <div class="topcircle top2"></div>
+                    <div class="topcircle top3"></div>
+                    <div class="topcircle top4"></div>
+                </div>
+                <div class="bottom bottom1"></div>
+                <div class="bottom bottom2"></div>
+                <div class="bottom bottom3"></div>
+                <div class="bottom bottom4"></div>
+                <div class="bottom"
+                    v-bind:style="{ width: computedWidth,height : computedHeight,bottom : computedBottom, left : computedLeft }">
+                </div>
             </div>
-            <div class="bottom bottom1"></div>
-            <div class="bottom bottom2"></div>
-            <div class="bottom bottom3"></div>
-            <div class="bottom bottom4"></div>
+            <div class="ear"></div>
         </div>
-        <div class="ear"></div>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                width: 10,
+                bottom: 30,
+                left: 20,
+                time: null
+            },
+            mounted() {
+                var vm = this;
+                vm.timer();
+            },
+            methods: {
+                timer() {
+                    let vm = this
+                    vm.time = setInterval(() => {
+                        if(vm.width==25)
+                        {
+                            vm.width = 10;    
+                            vm.bottom = 30;
+                            vm.left = 20; 
+                        }
+                        else
+                        {
+                            vm.width =vm.width+1 ;    
+                            vm.bottom = vm.bottom+10;
+                        }
+
+                    }, 150)
+                }
+            },
+            computed: {
+                computedWidth: function () {
+                    return this.width + 'px';
+                },
+                computedHeight: function () {
+                    return this.width+ 'px';
+                },
+                computedBottom: function () {
+                    return this.bottom+ 'px';
+                },
+                computedLeft: function () {
+                    return this.left+ 'px';
+                }
+
+            },
+        })
+    </script>
 </body>
+
 </html>
